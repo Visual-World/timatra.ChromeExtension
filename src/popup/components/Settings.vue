@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-subtitle-2">
-      Mapping von Ticketsystem-Projektname zu XXXXXXX-Projektname
+      Mapping von Ticketsystem-Projektname zu timatra-Projektname
     </div>
     <v-list v-if="projectMappings" density="compact" base-color="secondary">
       <template v-for="(item, index) in projectMappings" :key="item.projectSource">
@@ -35,7 +35,7 @@
       <v-text-field
         v-model="projectTarget"
         variant="outlined"
-        label="Projektname"
+        label="Timatra Projektname"
         density="compact"
         style="flex: 1;"
         hide-details

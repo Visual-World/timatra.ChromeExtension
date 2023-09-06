@@ -1,4 +1,4 @@
-import { worktimeBookingTrackingSystemUrl } from "./config"
+import { timtaraUrl } from "./config"
 import {
   MessageWithWorkitem,
   MessageWithTopicOrUndefinded,
@@ -60,11 +60,11 @@ function setActionBadge(flash: boolean) {
   }
 }
 
-async function passWorkitemInformationToWorktimeBookingTrackingSystem(workitem: WorkitemWithOrigin, createOrFill: "create" | "fill") {
-  console.log("passWorkitemInformationToWorktimeBookingTrackingSystem", workitem, createOrFill)
+async function passWorkitemInformationToTimatra(workitem: WorkitemWithOrigin, createOrFill: "create" | "fill") {
+  console.log("passWorkitemInformationToTimatra", workitem, createOrFill)
 
-  const tabAndWindow = await findWorktimeBookingTrackingSystemTab()
-  console.log("found WorktimeBookingTrackingSystem tab", tabAndWindow)
+  const tabAndWindow = await findTimatraTab()
+  console.log("found timatra tab", tabAndWindow)
 
   if (!tabAndWindow) {
     return
@@ -101,8 +101,8 @@ async function substituteProjectByMapping(projectSrc: string) {
     return projectMapping.find(pm => pm.projectSource.toLowerCase() === projectSrc.toLowerCase())?.projectTarget ?? projectSrc
 }
 
-async function findWorktimeBookingTrackingSystemTab(): Promise<{ tab: chrome.tabs.Tab; windowOfTab?: chrome.windows.Window } | undefined> {
-  const url = [`${worktimeBookingTrackingSystemUrl}/*`]
+async function findTimatraTab(): Promise<{ tab: chrome.tabs.Tab; windowOfTab?: chrome.windows.Window } | undefined> {
+  const url = [`${timtaraUrl}/*`]
 
   const windows = await chrome.windows.getAll()
   if (!windows) {
@@ -123,7 +123,7 @@ async function findWorktimeBookingTrackingSystemTab(): Promise<{ tab: chrome.tab
   }
 
   if (tabs.length === 0) {
-    const newTab = await chrome.tabs.create({ url: `${worktimeBookingTrackingSystemUrl}/mitarbeiter-bereich/`, active: true, pinned: true })
+    const newTab = await chrome.tabs.create({ url: `${timtaraUrl}/mitarbeiter-bereich/`, active: true, pinned: true })
     
     await new Promise((resolve)=> {
         const updateListener = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo) => {
@@ -168,10 +168,10 @@ chrome.runtime.onMessage.addListener((message: MessageWithTopicOrUndefinded, sen
       sendResponse(currentWorkitems)
       break
     case "fill-booking-from-workitem":
-      passWorkitemInformationToWorktimeBookingTrackingSystem((message as MessageWithWorkitemAndOrigin).workitem, "fill")
+      passWorkitemInformationToTimatra((message as MessageWithWorkitemAndOrigin).workitem, "fill")
       break
     case "create-booking-from-workitem":
-      passWorkitemInformationToWorktimeBookingTrackingSystem((message as MessageWithWorkitemAndOrigin).workitem, "create")
+      passWorkitemInformationToTimatra((message as MessageWithWorkitemAndOrigin).workitem, "create")
       break
     default:
       break

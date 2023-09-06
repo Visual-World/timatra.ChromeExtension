@@ -17,6 +17,17 @@ const workitemTicketTitleSelectors: WorkitemIdTitleSelector[] = [
     titleSel: [ "#show_issue .gh-header-show  h1 > bdi" ],
     projectSel: [ "header div.AppHeader-globalBar-start a.AppHeader-context-item > span.AppHeader-context-item-label" ],
   },
+
+  // VisualWorld Support (Zammad)
+  {
+    originRegExp: /https:\/\/support\.visual-world\.de*./,
+    idSel: [ ".ticketZoom-header .ticket-number" ],
+    titleSel: [ ".ticketZoom-header .ticket-title > div" ],
+    projectSel: [
+      ".tabsSidebar .sidebar[data-tab='organization'] div.sidebar-content h3[title='Name']",
+      ".tabsSidebar .sidebar[data-tab='customer'] div.sidebar-content h3[title='Name']",
+    ],
+  },
 ]
 
 let origin = ""

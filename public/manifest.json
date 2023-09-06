@@ -1,9 +1,9 @@
 {
-  "name": "XXXXXXX WorkitemHelper - ChromeExtension",
+  "name": "timatra WorkitemHelper - ChromeExtension",
   "version": "1.0.0",
   "manifest_version": 3,
   "action": {
-    "default_title": "XXXXXXX WorkitemHelper",
+    "default_title": "timatra WorkitemHelper",
     "default_popup": "/src/popup/index.html"
   },
   "background": {
@@ -12,13 +12,14 @@
   "permissions": ["tabs", "storage", "scripting"],
   "host_permissions": [
     "http://localhost:5173/",
-    "https://*.XXXXXXX.de/"
+    "https://*.timatra.de/"
   ],
   "content_scripts": [
     {
       "matches": [
         "https://*.visualstudio.com/*",
-        "https://github.com/*"
+        "https://github.com/*",
+        "https://support.visual-world.de/*"
     ],
       "js": ["/assets/main-cs.js"]
     }

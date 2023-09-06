@@ -1,6 +1,6 @@
 <template>
   <v-app class="popup-main bg-surface">
-    <v-app-bar :title="'WorktimeBookingTrackingSystem WorkitemHelper' + (settingsPage?' - Einstellungen' : '')" density="compact" color="primary">
+    <v-app-bar :title="'timatra WorkitemHelper' + (settingsPage?' - Einstellungen' : '')" density="compact" color="primary">
       <template #append>
         <v-btn :icon="mdiCogOutline" :variant="settingsPage ? 'tonal':'text'" density="comfortable" @click="settingsPage = !settingsPage" />
       </template>
