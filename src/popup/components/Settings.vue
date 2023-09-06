@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-subtitle-2">
-      Mapping von Ticketsystem-Projektname zu XXXXXXX-Projektname
+      Mapping von Ticketsystem-Projektname zu WorktimeBookingTrackingSystem-Projektname
     </div>
     <v-list v-if="projectMappings" density="compact" base-color="secondary">
       <template v-for="(item, index) in projectMappings" :key="item.projectSource">

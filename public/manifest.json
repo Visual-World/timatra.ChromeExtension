@@ -1,9 +1,9 @@
 {
-  "name": "XXXXXXX WorkitemHelper - ChromeExtension",
+  "name": "WorktimeBookingTrackingSystem WorkitemHelper - ChromeExtension",
   "version": "1.0.0",
   "manifest_version": 3,
   "action": {
-    "default_title": "XXXXXXX WorkitemHelper",
+    "default_title": "WorktimeBookingTrackingSystem WorkitemHelper",
     "default_popup": "/src/popup/index.html"
   },
   "background": {
@@ -12,7 +12,7 @@
   "permissions": ["tabs", "storage", "scripting"],
   "host_permissions": [
     "http://localhost:5173/",
-    "https://*.XXXXXXX.de/"
+    "https://*.WorktimeBookingTrackingSystem.de/"
   ],
   "content_scripts": [
     {
