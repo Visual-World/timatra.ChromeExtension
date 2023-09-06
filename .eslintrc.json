@@ -1,0 +1,77 @@
+{
+  "extends": [
+    // "eslint:recommended",
+    // "plugin:vue/base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-strongly-recommended"
+    // "plugin:vue/vue3-recommended"
+  ],
+  "rules": {
+    //TODO:
+    // "vue-scoped-css/enforce-style-type": ["error", { "allows": ["scoped", "module"] }],
+    "no-duplicate-imports": ["error", { "includeExports": true }],
+    "vue/multi-word-component-names": 0,
+    "semi": "off",
+    "@typescript-eslint/semi": ["warn", "never"],
+    "no-unused-vars": "off",
+    // "@typescript-eslint/no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+    "vue/component-api-style": ["error", ["script-setup", "composition"]],
+    "vue/max-attributes-per-line": [
+      "warn",
+      {
+        "singleline": {
+          "max": 5
+        },
+        "multiline": {
+          "max": 1
+        }
+      }
+    ],
+    "max-lines": ["error", { "max": 300, "skipBlankLines": true, "skipComments": true }],
+    "vue/singleline-html-element-content-newline": [
+      "warn",
+      {
+        "ignoreWhenNoAttributes": true,
+        "ignoreWhenEmpty": true
+      }
+    ],
+    "vue/component-name-in-template-casing": [
+      "error",
+      "kebab-case",
+      {
+        "registeredComponentsOnly": true,
+        "ignores": []
+      }
+    ],
+    "vue/attribute-hyphenation": ["error", "always"],
+    "vue/attributes-order": [
+      "warn",
+      {
+        "order": [
+          "DEFINITION",
+          "LIST_RENDERING",
+          "CONDITIONALS",
+          "RENDER_MODIFIERS",
+          "GLOBAL",
+          ["UNIQUE", "SLOT"],
+          "TWO_WAY_BINDING",
+          "OTHER_DIRECTIVES",
+          "OTHER_ATTR",
+          "EVENTS",
+          "CONTENT"
+        ],
+        "alphabetical": false
+      }
+    ],
+    "@typescript-eslint/no-empty-interface": ["off"],
+    "vue/no-setup-props-destructure": ["warn"]
+  },
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "parser": "@typescript-eslint/parser",
+    "sourceType": "module"
+  },
+  "ignorePatterns": ["**/swagger-client/*.ts"]
+}

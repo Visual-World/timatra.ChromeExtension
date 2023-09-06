@@ -1,0 +1,26 @@
+{
+  "name": "XXXXXXX WorkitemHelper - ChromeExtension",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "XXXXXXX WorkitemHelper",
+    "default_popup": "/src/popup/index.html"
+  },
+  "background": {
+    "service_worker": "/assets/background.js"
+  },
+  "permissions": ["tabs", "storage", "scripting"],
+  "host_permissions": [
+    "http://localhost:5173/",
+    "https://*.XXXXXXX.de/"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.visualstudio.com/*",
+        "https://github.com/*"
+    ],
+      "js": ["/assets/main-cs.js"]
+    }
+  ]
+}
