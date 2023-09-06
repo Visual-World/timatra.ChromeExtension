@@ -12,7 +12,7 @@
   "permissions": ["tabs", "storage", "scripting"],
   "host_permissions": [
     "http://localhost:5173/",
-    "https://*.WorktimeBookingTrackingSystem.de/"
+    "https://*.XXXXX.de/"
   ],
   "content_scripts": [
     {

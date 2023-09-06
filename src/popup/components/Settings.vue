@@ -35,7 +35,7 @@
       <v-text-field
         v-model="projectTarget"
         variant="outlined"
-        label="Projektname"
+        label="WorktimeBookingTrackingSystem Projektname"
         density="compact"
         style="flex: 1;"
         hide-details
