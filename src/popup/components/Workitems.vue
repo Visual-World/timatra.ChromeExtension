@@ -102,6 +102,9 @@ function workitemAsCommitTextToClipboard(workitem: WorkitemWithOrigin) {
 }
 function workitemAsBranchNameToClipboard(workitem: WorkitemWithOrigin) {
   const normalizedTitle = workitem.title
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
     .replace(bracesRegex, "_")
     .replace(whitespaceRegex, "-")
     .replace(specialCharsRegex, "")
