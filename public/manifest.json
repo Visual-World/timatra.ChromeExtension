@@ -1,5 +1,5 @@
 {
-  "name": "timatra WorkitemHelper - ChromeExtension",
+  "name": "timatra WorkitemHelper - BrowserExtension",
   "version": "1.0.0",
   "manifest_version": 3,
   "icons": {
