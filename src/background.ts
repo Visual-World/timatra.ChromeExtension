@@ -29,19 +29,30 @@ function addWorkitem(workitem: WorkitemWithOrigin) {
 
   notifyWorkitems()
 
-  chrome.runtime.sendMessage<MessageWithWorkitemAndOrigin>({
-    topic: "new-workitem-with-origin",
-    workitem,
-  })
+  try {
+    chrome.runtime.sendMessage<MessageWithWorkitemAndOrigin>({
+      topic: "new-workitem-with-origin",
+      workitem,
+    })
+  } catch (e) {
+    console.warn("cant notify new workitem", e)
+  }
 
   setActionBadge(!wasAlreadyIncluded)
 }
 
 async function notifyWorkitems() {
-  await chrome.runtime.sendMessage<MessageWithWorkitems>({
-    topic: "new-workitems",
-    workitems: currentWorkitems,
-  })
+  if (currentWorkitems.length === 0) {
+    return
+  }
+  try {
+    await chrome.runtime.sendMessage<MessageWithWorkitems>({
+      topic: "new-workitems",
+      workitems: currentWorkitems,
+    })
+  } catch (e) {
+    console.warn("cant notify workitems", e)
+  }
 }
 
 function setActionBadge(flash: boolean) {

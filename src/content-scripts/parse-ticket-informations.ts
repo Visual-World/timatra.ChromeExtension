@@ -15,7 +15,10 @@ const workitemTicketTitleSelectors: WorkitemIdTitleSelector[] = [
     originRegExp: /https:\/\/github\.com*./,
     idSel: [ "#show_issue .gh-header-show  h1 > span" ],
     titleSel: [ "#show_issue .gh-header-show  h1 > bdi" ],
-    projectSel: [ "header div.AppHeader-globalBar-start a.AppHeader-context-item > span.AppHeader-context-item-label" ],
+    projectSel: [ 
+      "#repository-container-header > div > div",
+      "header div.AppHeader-globalBar-start a.AppHeader-context-item > span.AppHeader-context-item-label",
+    ],
   },
 
   // VisualWorld Support (Zammad)
