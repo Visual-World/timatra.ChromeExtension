@@ -1,6 +1,8 @@
 import { MessageWithWorkitem } from "@/shared-types/messages"
 import { WorkitemIdTitleSelector, Workitem } from "@/shared-types/workitems"
 
+const actionBtnId = "wt-booking-tracking-action"
+
 const workitemTicketTitleSelectors: WorkitemIdTitleSelector[] = [
   // Azure Devops
   {
@@ -177,7 +179,7 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
     return
   }
 
-  const existingActionsBtn = document.getElementById("wt-booking-tracking-action")
+  const existingActionsBtn = document.getElementById(actionBtnId)
 
   const {elem: actionsContainer, selector} = getNodeAtFrontBySelector(selectorAndPositionWithFallbacks.map(s=>s.selector))
 

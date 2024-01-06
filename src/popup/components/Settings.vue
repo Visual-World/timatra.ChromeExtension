@@ -40,7 +40,7 @@
         style="flex: 1;"
         hide-details
       />
-      <v-btn :icon="mdiPlus" density="comfortable" variant="text" @click="add"/>
+      <v-btn :icon="mdiPlus" density="comfortable" variant="text" @click="add" />
     </div>
   </div>
 </template>
