@@ -200,14 +200,15 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
 
   const btn = document.createElement("button")
   btn.id = "wt-booking-tracking-action"
-  btn.textContent = "ACTION" //TODO:!
+  btn.title = "timatra Projektbuchung vorausfüllen"
+  btn.innerHTML = "<img src='https://app.timatra.de/timatra-logo.svg' style='min-height: 24px;'>"
   btn.style.background = "transparent"
   btn.style.border = "none"
   btn.style.cursor = "pointer"
   btn.style.alignSelf = "stretch"
   btn.onclick = () => chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "fill booking-from-workitem-direct", workitem: parsed })
 
-  if (position==="append") {
+  if (position === "append") {
     actionsContainer.append(btn)
   } else {
     actionsContainer.prepend(btn)
