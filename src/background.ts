@@ -5,7 +5,7 @@ import {
   MessageWithWorkitemAndOrigin,
   MessageWithWorkitems,
 } from "./shared-types/messages"
-import { WorkitemProjectMapping, WorkitemWithOrigin } from "./shared-types/workitems"
+import { Workitem, WorkitemProjectMapping, WorkitemWithOrigin } from "./shared-types/workitems"
 
 
 let currentWorkitems: WorkitemWithOrigin[] = []
@@ -71,7 +71,7 @@ function setActionBadge(flash: boolean) {
   }
 }
 
-async function passWorkitemInformationToTimatra(workitem: WorkitemWithOrigin, createOrFill: "create" | "fill") {
+async function passWorkitemInformationToTimatra(workitem: Workitem, createOrFill: "create" | "fill") {
   console.log("passWorkitemInformationToTimatra", workitem, createOrFill)
 
   const tabAndWindow = await findTimatraTab()
@@ -183,6 +183,9 @@ chrome.runtime.onMessage.addListener((message: MessageWithTopicOrUndefinded, sen
       break
     case "create-booking-from-workitem":
       passWorkitemInformationToTimatra((message as MessageWithWorkitemAndOrigin).workitem, "create")
+      break
+    case "fill booking-from-workitem-direct":
+      passWorkitemInformationToTimatra((message as MessageWithWorkitem).workitem, "fill")
       break
     default:
       break
