@@ -5,7 +5,7 @@ import {
   MessageWithWorkitemAndOrigin,
   MessageWithWorkitems,
 } from "./shared-types/messages"
-import { WorkitemProjectMapping, WorkitemWithOrigin } from "./shared-types/workitems"
+import { Workitem, WorkitemProjectMapping, WorkitemWithOrigin } from "./shared-types/workitems"
 
 
 let currentWorkitems: WorkitemWithOrigin[] = []
@@ -60,7 +60,7 @@ function setActionBadge(flash: boolean) {
   }
 }
 
-async function passWorkitemInformationToWorktimeBookingTrackingSystem(workitem: WorkitemWithOrigin, createOrFill: "create" | "fill") {
+async function passWorkitemInformationToWorktimeBookingTrackingSystem(workitem: Workitem, createOrFill: "create" | "fill") {
   console.log("passWorkitemInformationToWorktimeBookingTrackingSystem", workitem, createOrFill)
 
   const tabAndWindow = await findWorktimeBookingTrackingSystemTab()
@@ -172,6 +172,9 @@ chrome.runtime.onMessage.addListener((message: MessageWithTopicOrUndefinded, sen
       break
     case "create-booking-from-workitem":
       passWorkitemInformationToWorktimeBookingTrackingSystem((message as MessageWithWorkitemAndOrigin).workitem, "create")
+      break
+    case "fill booking-from-workitem-direct":
+      passWorkitemInformationToWorktimeBookingTrackingSystem((message as MessageWithWorkitem).workitem, "fill")
       break
     default:
       break
