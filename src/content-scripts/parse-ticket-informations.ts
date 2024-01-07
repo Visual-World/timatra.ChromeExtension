@@ -257,8 +257,8 @@ function createActionButton(id: string, options?: {text?: string, html?: string,
   btn.style.border = "none"
   btn.style.cursor = "pointer"
   btn.style.alignSelf = "stretch"
-  btn.style.minHeight = "24px"
-  btn.style.minWidth = "24px"
+  btn.style.minHeight = "32px"
+  btn.style.minWidth = "32px"
 
   if (options?.onclick) {
     btn.onclick = options.onclick
