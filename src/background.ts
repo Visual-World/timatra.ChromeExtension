@@ -6,6 +6,7 @@ import {
   MessageWithWorkitems,
 } from "./shared-types/messages"
 import { Workitem, WorkitemProjectMapping, WorkitemWithOrigin } from "./shared-types/workitems"
+import { getWorkitemAsBranchName, getWorkitemAsCommitText } from "@/utils/copy-workitem-information-as"
 
 
 let currentWorkitems: WorkitemWithOrigin[] = []
@@ -173,8 +174,14 @@ chrome.runtime.onMessage.addListener((message: MessageWithTopicOrUndefinded, sen
     case "create-booking-from-workitem":
       passWorkitemInformationToWorktimeBookingTrackingSystem((message as MessageWithWorkitemAndOrigin).workitem, "create")
       break
-    case "fill booking-from-workitem-direct":
+    case "fill-booking-from-workitem-direct":
       passWorkitemInformationToWorktimeBookingTrackingSystem((message as MessageWithWorkitem).workitem, "fill")
+      break
+    case "copy-branch-name":
+      sendResponse(getWorkitemAsBranchName((message as MessageWithWorkitem).workitem))
+      break
+    case "copy-commit-name":
+      sendResponse(getWorkitemAsCommitText((message as MessageWithWorkitem).workitem))
       break
     default:
       break

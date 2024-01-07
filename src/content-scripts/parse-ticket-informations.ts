@@ -1,7 +1,10 @@
+import { iconSvgBranch, iconSvgCommit } from "./assets/icons"
 import { MessageWithWorkitem } from "@/shared-types/messages"
 import { WorkitemIdTitleSelector, Workitem } from "@/shared-types/workitems"
 
-const actionBtnId = "wt-booking-tracking-action"
+const actionBtnFillId = "wt-booking-tracking-action-fill"
+const actionBtnCopyBranchNameId = "wt-booking-tracking-action-copy-branch-name"
+const actionBtnCopyCommitNameId = "wt-booking-tracking-action-copy-commit-name"
 
 const workitemTicketTitleSelectors: WorkitemIdTitleSelector[] = [
   // Azure Devops
@@ -165,7 +168,9 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
     return
   }
 
-  const existingActionsBtn = document.getElementById(actionBtnId)
+  const existingActionsBtn = document.getElementById(actionBtnFillId)
+  const existingCopyBranchNameBtn = document.getElementById(actionBtnCopyBranchNameId)
+  const existingCopyCommitNameBtn = document.getElementById(actionBtnCopyCommitNameId)
 
   const {elem: actionsContainer, selector} = getNodeAtFrontBySelector(selectorAndPositionWithFallbacks.map(s=>s.selector))
 
@@ -181,23 +186,68 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
       return
     } else {
       existingActionsBtn.remove()
+      existingCopyBranchNameBtn?.remove()
+      existingCopyCommitNameBtn?.remove()
     }
   }
 
   console.log("inject wt-booking-tracking-action button")
 
+  const fillBooking = createActionButton(
+    actionBtnFillId, 
+    {
+      text: "ACTION", //TODO:!
+      onclick: () => chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "fill-booking-from-workitem-direct", workitem: parsed }),
+    }
+  ) 
+
+  const copyCommitName = createActionButton(
+    actionBtnCopyCommitNameId,
+    {
+      html: iconSvgCommit,
+      title: "Als Vorlage für Commit-Text kopieren",
+      onclick: async () => navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-commit-name", workitem: parsed })),
+    }
+  ) 
+
+  const copyBranchName = createActionButton(
+    actionBtnCopyBranchNameId,
+    {
+      html: iconSvgBranch,
+      title: "Als Vorlage für Branch-Namen kopieren",
+      onclick: async () => navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-branch-name", workitem: parsed })),
+    }
+  ) 
+
+  if (position==="append") {
+    actionsContainer.append(fillBooking, copyCommitName, copyBranchName)
+  } else {
+    actionsContainer.prepend(fillBooking, copyCommitName, copyBranchName)
+  }
+}
+
+function createActionButton(id: string, options?: {text?: string, html?: string, title?: string, onclick?: () => void}) {
   const btn = document.createElement("button")
-  btn.id = actionBtnId
-  btn.textContent = "ACTION" //TODO:!
+  btn.id = id
+  if (options?.text) {
+    btn.textContent = options.text
+  }
+  if (options?.html) {
+    btn.innerHTML = options.html
+  }
+  if (options?.title) {
+    btn.title = options.title
+  }
   btn.style.background = "transparent"
   btn.style.border = "none"
   btn.style.cursor = "pointer"
   btn.style.alignSelf = "stretch"
-  btn.onclick = () => chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "fill booking-from-workitem-direct", workitem: parsed })
+  btn.style.minHeight = "24px"
+  btn.style.minWidth = "24px"
 
-  if (position==="append") {
-    actionsContainer.append(btn)
-  } else {
-    actionsContainer.prepend(btn)
+  if (options?.onclick) {
+    btn.onclick = options.onclick
   }
+
+  return btn
 }

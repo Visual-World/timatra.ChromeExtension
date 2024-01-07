@@ -8,7 +8,9 @@ export type MessageTopic =
   | "workitems-request"
   | "create-booking-from-workitem"
   | "fill-booking-from-workitem"
-  | "fill booking-from-workitem-direct"
+  | "fill-booking-from-workitem-direct"
+  | "copy-branch-name"
+  | "copy-commit-name"
 export type MessageWithTopic = { topic: MessageTopic }
 export type MessageWithTopicOrUndefinded = { topic: MessageTopic | undefined }
 export type MessageWithWorkitem = MessageWithTopic & { workitem: Workitem }
