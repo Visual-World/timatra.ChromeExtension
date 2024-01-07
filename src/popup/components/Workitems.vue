@@ -49,8 +49,8 @@
             </template>
 
             <v-list density="comfortable">
-              <v-list-item :prepend-icon="mdiSourceCommit" title="Als Vorlage für Commit-Text kopieren" @click="workitemAsCommitTextToClipboard(item)" />
-              <v-list-item :prepend-icon="mdiSourceBranch" title="Als Vorlage für Branch-Namen kopieren" @click="workitemAsBranchNameToClipboard(item)" />
+              <v-list-item :prepend-icon="mdiSourceCommit" title="Als Vorlage für Commit-Text kopieren" @click="workitemAsCommitTextToClipboardHandler(item)" />
+              <v-list-item :prepend-icon="mdiSourceBranch" title="Als Vorlage für Branch-Namen kopieren" @click="workitemAsBranchNameToClipboardHandler(item)" />
               <v-divider />
               <v-list-item :prepend-icon="mdiConnection" title="Mapping für dieses Projekt erstellen" @click="$emit('create-project-mapping-with-source', item.project)" />
             </v-list>
@@ -72,7 +72,7 @@
 import { MessageWithTopic, MessageWithWorkitemAndOrigin, MessageWithWorkitems } from "@/shared-types/messages"
 import { WorkitemWithOrigin } from "@/shared-types/workitems"
 import { onMounted, ref } from "vue"
-import {mdiFileSign, mdiRocketLaunchOutline,mdiContentCopy, mdiDotsHorizontal, mdiConnection, mdiSourceCommit, mdiSourceBranch} from '@mdi/js'
+import {mdiFileSign, mdiRocketLaunchOutline, mdiDotsHorizontal, mdiConnection, mdiSourceCommit, mdiSourceBranch} from '@mdi/js'
 
 defineEmits<{
   (event: 'create-project-mapping-with-source', projectSourceName: string): void
@@ -89,30 +89,12 @@ function fillOrCreateWorktimeBooking(workitem: WorkitemWithOrigin,action: "creat
   }
 }
 
-const quotesRegex = /[\"\'\´\`\$]/g
-const whitespaceRegex = /[\s]/g
-const specialCharsRegex = /[^a-zA-Z0-9\-]/g
-const bracesRegex = /\(\)[\{\}\[\]]/g
-const doubleUnderscoreRegex = /__+/g
-const doubleMinusRegex = /\-\-+/g
-
-function workitemAsCommitTextToClipboard(workitem: WorkitemWithOrigin) {
-  navigator.clipboard.writeText(`#${workitem.id} - ${workitem.title.replace(quotesRegex,"")}`)
+async function workitemAsCommitTextToClipboardHandler(workitem: WorkitemWithOrigin) {  
+  navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitemAndOrigin>({ topic: "copy-commit-name", workitem }))
   wasCopied.value = true
 }
-function workitemAsBranchNameToClipboard(workitem: WorkitemWithOrigin) {
-  const normalizedTitle = workitem.title
-    .replace(/ä/g, "ae")
-    .replace(/ö/g, "oe")
-    .replace(/ü/g, "ue")
-    .replace(bracesRegex, "_")
-    .replace(whitespaceRegex, "-")
-    .replace(specialCharsRegex, "")
-    .replace(doubleUnderscoreRegex, "_")
-    .replace(doubleMinusRegex, "-")
-    .toLowerCase()
-
-  navigator.clipboard.writeText(`${workitem.id}_${normalizedTitle}`)
+async function workitemAsBranchNameToClipboardHandler(workitem: WorkitemWithOrigin) {
+  navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitemAndOrigin>({ topic: "copy-branch-name", workitem }))
   wasCopied.value = true
 }
 
