@@ -74,10 +74,6 @@ export function registerContentObserver() {
         origin = document.location.origin
         workitemTicketTitleSelector = workitemTicketTitleSelectors.find((x) => x.originRegExp.test(origin)) ?? null
       }
-      
-      if (workitemTicketTitleSelector?.actionsSelectorAndPositioning) {
-        injectActions(workitemTicketTitleSelector?.actionsSelectorAndPositioning)
-      }
     })
     observer.observe(body, { childList: true, subtree: true })
   }
@@ -91,6 +87,10 @@ export function registerContentObserver() {
     }
 
     parseAndPublishWorkitem()
+
+    if (workitemTicketTitleSelector?.actionsSelectorAndPositioning) {
+      injectActions(workitemTicketTitleSelector?.actionsSelectorAndPositioning)
+    }
 
     isDirty = false
   }, 1000 * 2)
@@ -177,11 +177,6 @@ function trimHashtagOnStart(str: string | null): string | null {
 }
 
 function injectActions(selectorAndPositionWithFallbacks: {selector: string, position: 'append'|'prepend'}[]) {
-  const parsed = lastParsed
-  if (!parsed) {
-    return
-  }
-
   const existingActionsBtn = document.getElementById(actionBtnFillId)
   const existingCopyBranchNameBtn = document.getElementById(actionBtnCopyBranchNameId)
   const existingCopyCommitNameBtn = document.getElementById(actionBtnCopyCommitNameId)
@@ -212,7 +207,12 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
     {
       html: "<img src='https://app.timatra.de/timatra-logo.svg' style='min-height: 24px;'>",
       title: "timatra Projektbuchung vorausfüllen",
-      onclick: () => chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "fill-booking-from-workitem-direct", workitem: parsed }),
+      onclick: () => {
+        if (!lastParsed) {
+          return
+        }
+        chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "fill-booking-from-workitem-direct", workitem: lastParsed })
+      },
     }
   ) 
 
@@ -221,7 +221,12 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
     {
       html: iconSvgCommit,
       title: "Als Vorlage für Commit-Text kopieren",
-      onclick: async () => navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-commit-name", workitem: parsed })),
+      onclick:  async () => {
+        if (!lastParsed) {
+          return
+        }
+        navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-commit-name", workitem: lastParsed }))
+      },
     }
   ) 
 
@@ -230,7 +235,12 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
     {
       html: iconSvgBranch,
       title: "Als Vorlage für Branch-Namen kopieren",
-      onclick: async () => navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-branch-name", workitem: parsed })),
+      onclick: async () => {
+        if (!lastParsed) {
+          return
+        } 
+        navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-branch-name", workitem: lastParsed }))
+      },
     }
   ) 
 
