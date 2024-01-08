@@ -163,11 +163,6 @@ function trimHashtagOnStart(str: string | null): string | null {
 }
 
 function injectActions(selectorAndPositionWithFallbacks: {selector: string, position: 'append'|'prepend'}[]) {
-  const parsed = lastParsed
-  if (!parsed) {
-    return
-  }
-
   const existingActionsBtn = document.getElementById(actionBtnFillId)
   const existingCopyBranchNameBtn = document.getElementById(actionBtnCopyBranchNameId)
   const existingCopyCommitNameBtn = document.getElementById(actionBtnCopyCommitNameId)
@@ -197,7 +192,12 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
     actionBtnFillId, 
     {
       text: "ACTION", //TODO:!
-      onclick: () => chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "fill-booking-from-workitem-direct", workitem: parsed }),
+      onclick: () => {
+        if (!lastParsed) {
+          return
+        }
+        chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "fill-booking-from-workitem-direct", workitem: lastParsed })
+      },
     }
   ) 
 
@@ -206,7 +206,12 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
     {
       html: iconSvgCommit,
       title: "Als Vorlage für Commit-Text kopieren",
-      onclick: async () => navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-commit-name", workitem: parsed })),
+      onclick:  async () => {
+        if (!lastParsed) {
+          return
+        }
+        navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-commit-name", workitem: lastParsed }))
+      },
     }
   ) 
 
@@ -215,7 +220,12 @@ function injectActions(selectorAndPositionWithFallbacks: {selector: string, posi
     {
       html: iconSvgBranch,
       title: "Als Vorlage für Branch-Namen kopieren",
-      onclick: async () => navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-branch-name", workitem: parsed })),
+      onclick: async () => {
+        if (!lastParsed) {
+          return
+        } 
+        navigator.clipboard.writeText(await chrome.runtime.sendMessage<MessageWithWorkitem>({ topic: "copy-branch-name", workitem: lastParsed }))
+      },
     }
   ) 
 
