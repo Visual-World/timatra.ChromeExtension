@@ -60,10 +60,6 @@ export function registerContentObserver() {
         origin = document.location.origin
         workitemTicketTitleSelector = workitemTicketTitleSelectors.find((x) => x.originRegExp.test(origin)) ?? null
       }
-      
-      if (workitemTicketTitleSelector?.actionsSelectorAndPositioning) {
-        injectActions(workitemTicketTitleSelector?.actionsSelectorAndPositioning)
-      }
     })
     observer.observe(body, { childList: true, subtree: true })
   }
@@ -77,6 +73,10 @@ export function registerContentObserver() {
     }
 
     parseAndPublishWorkitem()
+
+    if (workitemTicketTitleSelector?.actionsSelectorAndPositioning) {
+      injectActions(workitemTicketTitleSelector?.actionsSelectorAndPositioning)
+    }
 
     isDirty = false
   }, 1000 * 2)
