@@ -1,6 +1,6 @@
 {
   "name": "timatra WorkitemHelper - BrowserExtension",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "manifest_version": 3,
   "icons": {
     "16": "timatra-logo-16.png",
